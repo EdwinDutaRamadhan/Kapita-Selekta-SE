@@ -1,0 +1,12 @@
+def celciusToReamur(c):
+    return 4/5*c
+def celciusToFarenheit(c):
+    return 9/5*c+32
+def reamurToCelcius(r):
+    return 5/4*r
+def reamurToFarenheit(r):
+    return 9/4*r+32
+def farenheitToCelcius(f):
+    return (f-32)*5/9
+def farenheitToReamur(f):
+    return (f-32)*4/9
