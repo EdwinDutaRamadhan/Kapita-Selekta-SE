@@ -13,6 +13,7 @@ def generatePassword(obj):
         # print(obj[j])
         randPassword += obj[j]
         i+=1
+        print(obj[j])
         
     return randPassword
 
