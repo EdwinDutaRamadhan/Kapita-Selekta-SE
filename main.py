@@ -1,4 +1,8 @@
-def index(nama="Default") :
-    print(f"Hello World {nama}") #statement
+from flask import Flask
 
-index()
+app = Flask(__name__)
+
+@app.route("/")
+def index() :
+    return "Hello"
+
