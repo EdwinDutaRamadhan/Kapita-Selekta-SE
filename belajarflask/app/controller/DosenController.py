@@ -14,24 +14,7 @@ def index():
 
 
 
-def formatarray(datas):
-    array = []
 
-    for i in datas:
-        array.append(singleObject(i))
-    
-    return array
-
-def singleObject(data):
-    data = {
-        'id' : data.id,
-        'nidn' : data.nidn,
-        'nama' : data.nama,
-        'phone' : data.phone,
-        'alamat' : data.alamat
-    }
-
-    return data
 
 def detail(id):
     try:
@@ -42,7 +25,7 @@ def detail(id):
             return response.badRequest([], 'Tidak ada data dosen')
 
         datamahasiswa = formatMahasiswa(mahasiswa)
-
+        
         data = singleDetailMahasiswa(dosen, datamahasiswa)
 
         return response.success(data, "success")
@@ -56,7 +39,18 @@ def singleDetailMahasiswa(dosen, mahasiswa):
         'nidn': dosen.nidn,
         'nama': dosen.nama,
         'phone': dosen.phone,
-        'mahasiswa' : mahasiswa
+        'mahasiswa': mahasiswa
+    }
+
+    return data
+
+def singleObject(data):
+    data = {
+        'id' : data.id,
+        'nidn' : data.nidn,
+        'nama' : data.nama,
+        'phone' : data.phone,
+        'alamat' : data.alamat
     }
 
     return data
@@ -68,7 +62,7 @@ def singleMahasiswa(mahasiswa):
         'nama': mahasiswa.nama,
         'phone': mahasiswa.phone
     }
-
+    
     return data
 
 def formatMahasiswa(data):
@@ -76,3 +70,52 @@ def formatMahasiswa(data):
     for i in data:
         array.append(singleMahasiswa(i))
     return array
+
+def formatarray(datas):
+    array = []
+    for i in datas:
+        array.append(singleObject(i))
+    return array
+
+def save():
+    try:
+        nidn = request.form.get('nidn')
+        nama = request.form.get('nama')
+        phone = request.form.get('phone')
+        alamat = request.form.get('alamat')
+
+        dosens = Dosen(nidn=nidn, nama=nama, phone=phone,alamat=alamat)
+        db.session.add(dosens)
+        db.session.commit()
+
+        return response.success('', 'Sukses menambah data')
+    except Exception as e:
+        print(e)
+
+def ubah(id):
+    try:
+        nidn = request.form.get('nidn')
+        nama = request.form.get('nama')
+        phone = request.form.get('phone')
+        alamat = request.form.get('alamat')
+
+        input = [
+            {
+                'nidn': nidn,
+                'nama': nama,
+                'phone': phone,
+                'alamat':alamat
+            }
+        ]
+
+        dosen = Dosen.query.filter_by(id=id).first()
+        dosen.nidn = nidn
+        dosen.nama = nama
+        dosen.phone = phone
+        dosen.alamat = alamat
+
+        db.session.commit()
+        return response.success(input, 'Berhasil update data')
+    
+    except Exception as e:
+        print(e)
