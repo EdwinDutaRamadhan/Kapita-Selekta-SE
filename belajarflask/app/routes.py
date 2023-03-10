@@ -1,5 +1,5 @@
 from app import app
-from app.controller import DosenController
+from app.controller import DosenController, UserController
 from flask import request
 
 
@@ -13,6 +13,12 @@ def dosens():
         return DosenController.index()
     else:
         return DosenController.save()
+
+@app.route('/createadmin', methods=['GET', 'POST'])
+def admins():
+    if request.method == 'POST':
+        return UserController.buatAdmin()
+
 @app.route('/dosen/<id>', methods=['GET', 'PUT','DELETE'])
 def dosenDetail(id):
     if request.method == 'GET':
@@ -21,4 +27,6 @@ def dosenDetail(id):
         return DosenController.ubah(id)
     elif request.method == 'DELETE':
         return DosenController.hapus(id)
+    
+
 
