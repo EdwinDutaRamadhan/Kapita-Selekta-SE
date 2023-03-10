@@ -13,10 +13,12 @@ def dosens():
         return DosenController.index()
     else:
         return DosenController.save()
-@app.route('/dosen/<id>', methods=['GET', 'PUT'])
+@app.route('/dosen/<id>', methods=['GET', 'PUT','DELETE'])
 def dosenDetail(id):
     if request.method == 'GET':
         return DosenController.detail(id)
-    else:
+    elif request.method == 'PUT':
         return DosenController.ubah(id)
+    elif request.method == 'DELETE':
+        return DosenController.hapus(id)
 
