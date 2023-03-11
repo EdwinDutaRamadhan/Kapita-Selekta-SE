@@ -28,5 +28,6 @@ def dosenDetail(id):
     elif request.method == 'DELETE':
         return DosenController.hapus(id)
     
-
-
+@app.route('/login', methods=['POST'])
+def logins():
+    return UserController.login()
