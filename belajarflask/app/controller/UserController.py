@@ -1,10 +1,49 @@
 from app.model.user import User
-
-from app import response, app, db 
+from app.model.gambar import Gambar
+import os
+from app import response, app, db ,uploadconfig
+import uuid
+from werkzeug.utils import secure_filename
 from flask import request
 from flask_jwt_extended import *
 import datetime
 
+
+def upload():
+    try:
+        judul = request.form.get('judul')
+
+        if 'file' not in request.files:
+            return response.badRequest([],'File tidak tersedia')
+
+        file = request.files['file']
+
+        if file.filename == '':
+            return response.badRequest([],'File tidak tersedia')
+        if file and uploadconfig.allowed_file(file.filename):
+            uid = uuid.uuid4()
+            filename = secure_filename(file.filename)
+            renamefile = "Flask-"+str(uid)+filename
+
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], renamefile))
+
+            uploads = Gambar(judul=judul, pathname=renamefile)
+            db.session.add(uploads)
+            db.session.commit()
+
+            return response.success(
+                {
+                    'judul': judul,
+                    'pathname': renamefile
+                }, 
+                "Sukses mengupload file"
+            )
+        else:
+            return response.badRequest([],'File tidak diizinkan')
+
+
+    except Exception as e:
+        print(e)
 
 def buatAdmin():
     try:

@@ -23,6 +23,11 @@ def dosens():
     else:
         return DosenController.save()
 
+@app.route('/upload', methods=['POST'])
+def uploads():
+    return UserController.upload()
+
+
 @app.route('/createadmin', methods=['GET', 'POST'])
 def admins():
     if request.method == 'POST':
